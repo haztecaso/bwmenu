@@ -76,4 +76,3 @@ class AuthError(Exception):
         self.reason = reason
         super().__init__(self.reason)
 
-

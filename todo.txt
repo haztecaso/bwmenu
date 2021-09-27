@@ -1,0 +1,2 @@
+- Finish implementing qutebrowser support
+- Add interactive option to clear item list cache
