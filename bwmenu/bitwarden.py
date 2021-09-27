@@ -22,23 +22,27 @@ class BitWarden():
     @property
     def session_key(self):
         if not self._session_key:
-            self.session_cache.load_silent()
-            self._session_key = self.session_cache.data
-            if not self._session_key:
-                master_password = ask_password("Master Password")
-                try:
-                    self._session_key = self.get_session_key(master_password)
-                    self.session_cache.save(self._session_key)
-                except ProcessError:
-                    raise AuthError("Invalid master password")
+            self.set_session_key_from_cache()
+        if not self._session_key:
+            self.set_session_key_interactive()
         return self._session_key
 
-    def get_session_key(self, master_password: str) -> str:
+    def set_session_key_interactive(self):
+        master_password = ask_password("Master Password")
         if len(master_password) > 0:
-            stdout, _, _ = process_run([bw, 'unlock', '--raw', master_password])
+            try:
+                cmd = [bw, 'unlock', '--raw', master_password]
+                self._session_key, _, _ = process_run(cmd)
+            except ProcessError:
+                raise AuthError("Invalid master password")
+            else:
+                self.session_cache.save(self._session_key)
         else:
             raise AuthError("You must enter a non-empty master password")
-        return stdout
+
+    def set_session_key_from_cache(self):
+        self.session_cache.load_silent()
+        self._session_key = self.session_cache.data
 
     def run_subcmd(self, subcmd: List[str]):
         cmd = [bw] + subcmd + ["--session", self.session_key]
@@ -75,6 +79,7 @@ class BitWarden():
         return result
 
     def search_item_by_url_custom(self, url:str) -> List[Item]:
+        # TODO: optimize
         return [item for item in self.item_list if item.match_url(url)]
 
     def search_item_by_url_bw(self, url:str) -> List[Item]:
@@ -83,7 +88,6 @@ class BitWarden():
             return parse_item_list(self.run_subcmd(subcmd))
         except ProcessError:
             raise AuthError("Invalid session key")
-
 
 
 class AuthError(Exception):
