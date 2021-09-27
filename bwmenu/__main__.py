@@ -12,6 +12,7 @@ Options:
 from docopt import docopt
 from os import getenv
 
+from .utils import ProcessError
 from .bitwarden import BitWarden, AuthError
 from .rofi import select_item, error_message
 
@@ -19,26 +20,27 @@ def run():
     args = docopt(__doc__, version="bitwarden v0.0.1")
     bw = BitWarden()
     qutebrowser = getenv("QUTE_MODE") == "command"
-    print(bw.session_key)
     items = bw.list_items(getenv("QUTE_URL")) if qutebrowser\
             else bw.list_items()
     if len(items) == 0:
         error_message("No items found")
-        return
-    item = items[0] if len(items) == 1\
-            else select_item(items)
-    item.type_all(True)
+    else:
+        try:
+            item = items[0] if len(items) == 1 else select_item(items)
+        except ProcessError:
+            print("Item not selected...")
+        else:
+            item.type_all(True)
 
 
 def main_loop_catch_errors(n_retries:int):
-    if n_retries == 0:
-        return
-    try:
-        run()
-    except AuthError as e:
-        error_message(f'AuthError: {e.reason}')
-        n_retries -= 1
-        main_loop_catch_errors(n_retries)
+    if n_retries > 0:
+        try:
+            run()
+        except AuthError as e:
+            error_message(f'AuthError: {e.reason}')
+            n_retries -= 1
+            main_loop_catch_errors(n_retries)
 
 def main():
     main_loop_catch_errors(2)
