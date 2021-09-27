@@ -1,15 +1,15 @@
-import json
 from typing import List
 
 from .utils import process_run, ProcessError
 from .rofi import ask_password
-from .item import Item
+from .item import Item, parse_item_list
 from .bin import bw
 
 
 class BitWarden():
     def __init__(self):
         self._session_key = None
+        self._session_key = "yn8WWarH2PaC/Pd8umsTeFj4ORLS8VbVjWYVQubDaBHA+2XjQOq0BakRsfgO8mxJ2LnLsYSeBRVCTUWuKVMV9Q=="
 
     def get_session_key(self, master_password: str) -> str:
         if len(master_password) > 0:
@@ -67,11 +67,3 @@ class AuthError(Exception):
         super().__init__(self.reason)
 
 
-def parse_item_list(raw_list_json:str) -> List[Item]:
-        return list(map(
-                lambda i: Item(i),
-                filter(
-                    lambda i: i['type'] == 1,
-                    json.loads(raw_list_json)
-                    )
-                ))

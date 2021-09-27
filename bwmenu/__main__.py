@@ -19,6 +19,7 @@ def run():
     args = docopt(__doc__, version="bitwarden v0.0.1")
     bw = BitWarden()
     qutebrowser = getenv("QUTE_MODE") == "command"
+    print(bw.session_key)
     items = bw.list_items(getenv("QUTE_URL")) if qutebrowser\
             else bw.list_items()
     if len(items) == 0:
@@ -26,7 +27,7 @@ def run():
         return
     item = items[0] if len(items) == 1\
             else select_item(items)
-    print(item)
+    item.type_all(True)
 
 
 def main_loop_catch_errors(n_retries:int):
