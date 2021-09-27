@@ -5,15 +5,6 @@ from .rofi import ask_password, error_message
 from .item import Item
 from .bin import bw
 
-def parse_item_list(raw_list_json:str) -> List[Item]:
-        return list(map(
-                lambda i: Item(i),
-                filter(
-                    lambda i: i['type'] == 1,
-                    json.loads(raw_list_json)
-                    )
-                ))
-
 
 class BitWarden():
     def __init__(self):
@@ -63,3 +54,13 @@ class BitWarden():
 
     def list_items_by_url(self, url:str) -> List[Item]:
         return parse_item_list(self.run_subcmd(["list", "items", "--url", url]))
+
+
+def parse_item_list(raw_list_json:str) -> List[Item]:
+        return list(map(
+                lambda i: Item(i),
+                filter(
+                    lambda i: i['type'] == 1,
+                    json.loads(raw_list_json)
+                    )
+                ))
