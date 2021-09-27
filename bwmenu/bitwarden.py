@@ -12,6 +12,11 @@ LIST_CACHE_FILE = "/tmp/bw_list_cache.gpg"
 
 
 class BitWarden():
+    """
+    Class that wraps and reimplements some funcrionality of bitwarden-cli.
+    Also uses the gpg wrappers defined in .gpg to cache the data into files for
+    faster loading of credentials.
+    """
 
     def __init__(self):
         self._session_key = None
@@ -22,9 +27,9 @@ class BitWarden():
     @property
     def session_key(self):
         if not self._session_key:
-            self.set_session_key_from_cache()
+            self._set_session_key_from_cache()
         if not self._session_key:
-            self.set_session_key_interactive()
+            self._set_session_key_interactive()
         return self._session_key
 
     def set_session_key_interactive(self):
@@ -56,20 +61,24 @@ class BitWarden():
     @property
     def item_list(self):
         if not self._item_list:
-            self.list_cache.load_silent(parse_item_list)
-            self._item_list = self.list_cache.data
-            if not self._item_list:
-                self._item_list = self.get_item_list()
-                encoded_item_list = encode_item_list(self._item_list)
-                self.list_cache.save(encoded_item_list)
+            self.set_item_list_from_cache
+        if not self._item_list:
+            self._item_list = self.set_item_list_from_bw()
         return self._item_list
 
-    def get_item_list(self) -> List[Item]:
+    def set_item_list_from_bw(self):
         subcmd = ["list", "items"]
         try:
-            return parse_item_list(self.run_subcmd(subcmd))
+            self._item_list = parse_item_list(self.run_subcmd(subcmd))
         except ProcessError:
             raise AuthError("Invalid session key")
+        else:
+            encoded_item_list = encode_item_list(self._item_list)
+            self.list_cache.save(encoded_item_list)
+
+    def set_item_list_from_cache(self):
+        self.list_cache.load_silent(parse_item_list)
+        self._item_list = self.list_cache.data
 
     def search_item_by_url(self, url:str, bw_mode = False) -> List[Item]:
         if bw_mode:
