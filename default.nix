@@ -2,7 +2,7 @@
 
 python38Packages.buildPythonPackage rec {
   pname = "bwmenu";
-  version = "0.0.1";
+  version = "0.1.1";
 
   src = ./.;
 

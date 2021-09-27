@@ -7,7 +7,7 @@ with open("readme.md", "r") as readme_file:
 
 setuptools.setup(
     name="bitwarden-rofi", # Replace with your own username
-    version="0.0.1",
+    version="0.1.1",
     author="Adrián Lattes",
     author_email="adrianlattes@disroot.org",
     description="bitwarden-cli rofi wrapper",

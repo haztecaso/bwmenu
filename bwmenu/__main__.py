@@ -17,7 +17,7 @@ from .bitwarden import BitWarden, AuthError
 from .rofi import select_item, error_message
 
 def run():
-    args = docopt(__doc__, version="bitwarden v0.0.1")
+    args = docopt(__doc__, version="bitwarden v0.1.1")
     bw = BitWarden()
     qutebrowser = getenv("QUTE_MODE") == "command"
     if qutebrowser:
@@ -44,8 +44,10 @@ def main_loop_catch_errors(n_retries:int):
             n_retries -= 1
             main_loop_catch_errors(n_retries)
 
+
 def main():
     main_loop_catch_errors(2)
+
 
 if __name__ == "__main__":
     main()
