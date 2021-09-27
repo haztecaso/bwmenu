@@ -2,7 +2,7 @@ from dataclasses import dataclass
 import json
 from typing import List
 
-from .keyboard import type_word, type_tab, type_return
+from .input import type_word, type_tab, type_return
 from time import sleep
 
 
@@ -33,21 +33,21 @@ class Item():
                 }
             }
 
-    def type_username(self):
-        type_word(self.username)
+    def type_username(self, **kwargs):
+        type_word(self.username, **kwargs)
 
-    def type_password(self):
-        type_word(self.password)
+    def type_password(self, **kwargs):
+        type_word(self.password, **kwargs)
 
-    def type_all(self, ret=False):
-        self.type_username()
+    def type_all(self, ret=False, **kwargs):
+        self.type_username(**kwargs)
         sleep(0.15)
         type_tab()
         sleep(0.15)
-        self.type_password()
+        self.type_password(**kwargs)
         sleep(0.15)
         if ret:
-            type_return()
+            type_return(**kwargs)
 
     def __str__(self):
         return f"{self.name}: {self.username}\t\t[id: {self.id}]"

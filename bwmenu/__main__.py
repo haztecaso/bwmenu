@@ -32,7 +32,7 @@ def run():
         except ProcessError:
             print("Item not selected...")
         else:
-            item.type_all(True)
+            item.type_all(True, qute = qutebrowser)
 
 
 def main_loop_catch_errors(n_retries:int):
