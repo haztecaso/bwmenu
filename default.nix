@@ -8,9 +8,6 @@ python38Packages.buildPythonPackage rec {
 
   propagatedBuildInputs = with python38Packages; [ docopt ];
 
-  # checkInputs = [ pkgs.python38Packages.pytest ];
-  # checkPhase = "pytest";
-
   postInstall = ''
     substituteInPlace $out/lib/*/site-packages/bwmenu/bin.py\
       --replace "\"bw\"" "\"${bitwarden-cli}/bin/bw\""\
