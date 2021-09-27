@@ -48,7 +48,7 @@ class Item():
     def type_password(self, **kwargs):
         type_word(self.password, **kwargs)
 
-    def type_all(self, ret=False, **kwargs):
+    def type_all(self, ret=True, **kwargs):
         self.type_username(**kwargs)
         sleep(0.15)
         type_tab()
