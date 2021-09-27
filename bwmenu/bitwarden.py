@@ -23,7 +23,7 @@ class BitWarden():
         if not self._session_key:
             self.session_cache.load_silent()
             self._session_key = self.session_cache.data
-            if not self.session_key:
+            if not self._session_key:
                 master_password = ask_password("Master Password")
                 try:
                     self._session_key = self.get_session_key(master_password)
@@ -34,14 +34,14 @@ class BitWarden():
 
     def get_session_key(self, master_password: str) -> str:
         if len(master_password) > 0:
-            stdout, _= process_run([bw, 'unlock', '--raw', master_password])
+            stdout, _, _ = process_run([bw, 'unlock', '--raw', master_password])
         else:
             raise AuthError("You must enter a non-empty master password")
         return stdout
 
     def run_subcmd(self, subcmd: List[str]):
         cmd = [bw] + subcmd + ["--session", self.session_key]
-        stdout, _ = process_run(cmd)
+        stdout, _, _ = process_run(cmd)
         return stdout
 
     def lock(self):
@@ -67,7 +67,6 @@ class BitWarden():
             return parse_item_list(self.run_subcmd(subcmd))
         except ProcessError:
             raise AuthError("Invalid session key")
-
 
 
 class AuthError(Exception):
