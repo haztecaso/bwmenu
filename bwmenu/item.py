@@ -22,6 +22,17 @@ class Item():
     def __eq__(self, other):
         return self.id == other.id
 
+    def dict(self):
+        return {
+            'type': 1,
+            'id': self.id,
+            'name': self.name,
+            'login' : {
+                'username' : self.username, 
+                'password' : self.password
+                }
+            }
+
     def type_username(self):
         type_word(self.username)
 
@@ -50,3 +61,7 @@ def parse_item_list(raw_list_json:str) -> List[Item]:
                     json.loads(raw_list_json)
                     )
                 ))
+
+def encode_item_list(items:List[Item]) -> str:
+    return json.dumps([item.dict() for item in items])
+

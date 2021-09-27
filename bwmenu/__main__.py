@@ -20,8 +20,10 @@ def run():
     args = docopt(__doc__, version="bitwarden v0.0.1")
     bw = BitWarden()
     qutebrowser = getenv("QUTE_MODE") == "command"
-    items = bw.list_items(getenv("QUTE_URL")) if qutebrowser\
-            else bw.list_items()
+    if qutebrowser:
+        items = bw.get_item_list(getenv("QUTE_URL"))
+    else:
+        items = bw.item_list
     if len(items) == 0:
         error_message("No items found")
     else:
