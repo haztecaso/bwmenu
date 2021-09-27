@@ -40,7 +40,9 @@ def main_loop_catch_errors(n_retries:int):
         n_retries -= 1
         main_loop_catch_errors(n_retries)
 
+def main():
+    main_loop_catch_errors(2)
 
 if __name__ == "__main__":
-    main_loop_catch_errors(2)
+    main()
 
