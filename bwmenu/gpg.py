@@ -3,6 +3,7 @@ import os
 from .utils import process_run, ProcessError
 from .bin import gpg
 
+
 def encrypt(path: str, data: str):
     cmd = [gpg, "-e", "--default-recipient-self", "--armor"]
     stdout, _, _ = process_run(cmd, data)

@@ -4,6 +4,7 @@ from .utils import process_run
 from .bin import rofi
 from .item import Item
 
+
 def run(title:str, extra_options:List[str], stdin:str="") -> str:
     cmd = [rofi, "-dmenu", "-p", title] + extra_options
     stdout, _, _ = process_run(cmd, stdin)

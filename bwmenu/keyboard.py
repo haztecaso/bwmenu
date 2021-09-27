@@ -1,6 +1,7 @@
 from .bin import xdotool
 from .utils import process_run
 
+
 def run(*args:str):
     process_run([xdotool] + list(args))
 

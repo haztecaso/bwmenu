@@ -12,6 +12,7 @@ LIST_CACHE_FILE = "/tmp/bw_list_cache.gpg"
 
 
 class BitWarden():
+
     def __init__(self):
         self._session_key = None
         self._item_list = None
