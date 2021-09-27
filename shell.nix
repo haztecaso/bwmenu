@@ -13,6 +13,7 @@ pkgs.mkShell {
     xdotool 
   ]) ++ (with pkgs.python38Packages; [
     docopt
+    tldextract
     pytest
   ]);
   shellHook = ''

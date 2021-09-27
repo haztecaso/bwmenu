@@ -60,14 +60,30 @@ class BitWarden():
                 self.list_cache.save(encoded_item_list)
         return self._item_list
 
-    def get_item_list(self, url=None) -> List[Item]:
+    def get_item_list(self) -> List[Item]:
         subcmd = ["list", "items"]
-        if url:
-            subcmd += ["--url", url]
         try:
             return parse_item_list(self.run_subcmd(subcmd))
         except ProcessError:
             raise AuthError("Invalid session key")
+
+    def search_item_by_url(self, url:str, bw_mode = False) -> List[Item]:
+        if bw_mode:
+            result = self.search_item_by_url_bw(url)
+        else:
+            result = self.search_item_by_url_custom(url)
+        return result
+
+    def search_item_by_url_custom(self, url:str) -> List[Item]:
+        return [item for item in self.item_list if item.match_url(url)]
+
+    def search_item_by_url_bw(self, url:str) -> List[Item]:
+        subcmd = ["list", "items", "--url", url]
+        try:
+            return parse_item_list(self.run_subcmd(subcmd))
+        except ProcessError:
+            raise AuthError("Invalid session key")
+
 
 
 class AuthError(Exception):
@@ -76,3 +92,6 @@ class AuthError(Exception):
         self.reason = reason
         super().__init__(self.reason)
 
+
+def match_detect_basename(uris, current_url):
+    pass

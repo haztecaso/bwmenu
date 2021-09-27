@@ -1,6 +1,8 @@
 from subprocess import Popen, PIPE
-from typing import List, Tuple
 import fcntl, os
+from typing import List, Tuple
+
+import tldextract
 
 
 def _set_non_blocking(fd):
@@ -26,4 +28,9 @@ class ProcessError(Exception):
     pass
 
 
-__all__ = ["process_run", "ProcessError"]
+def baseurl(url):
+    ext = tldextract.extract(url)
+    return f"{ext.domain}.{ext.suffix}"
+
+
+__all__ = ["process_run", "ProcessError", "baseurl"]

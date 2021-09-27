@@ -7,6 +7,8 @@ Options:
       Show this help text and exit.
   -v, --version
       Show version information and exit.
+  --bw-match
+      Use bitwarden-cli to match urls instead of custom implementation.
 """
 
 from docopt import docopt
@@ -21,7 +23,7 @@ def run():
     bw = BitWarden()
     qutebrowser = getenv("QUTE_MODE") == "command"
     if qutebrowser:
-        items = bw.get_item_list(getenv("QUTE_URL"))
+        items = bw.search_item_by_url(getenv("QUTE_URL"), args['--bw-match'])
     else:
         items = bw.item_list
     if len(items) == 0:
@@ -32,7 +34,7 @@ def run():
         except ProcessError:
             print("Item not selected...")
         else:
-            item.type_all(True, qute = qutebrowser)
+            item.type_all(qute = qutebrowser)
 
 
 def main_loop_catch_errors(n_retries:int):

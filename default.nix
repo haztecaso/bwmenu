@@ -6,7 +6,7 @@ python38Packages.buildPythonPackage rec {
 
   src = ./.;
 
-  propagatedBuildInputs = with python38Packages; [ docopt ];
+  propagatedBuildInputs = with python38Packages; [ docopt tldextract ];
 
   postInstall = ''
     substituteInPlace $out/lib/*/site-packages/bwmenu/bin.py\

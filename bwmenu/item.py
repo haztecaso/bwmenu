@@ -2,6 +2,7 @@ from dataclasses import dataclass
 import json
 from typing import List
 
+from .utils import baseurl
 from .input import type_word, type_tab, type_return
 from time import sleep
 
@@ -18,20 +19,28 @@ class Item():
         self.name = item['name']
         self.username = item['login']['username']
         self.password = item['login']['password']
+        self.baseurls = []
+        for uri_data in item['login'].get('uris', []):
+            self.baseurls.append(baseurl(uri_data["uri"]))
 
     def __eq__(self, other):
         return self.id == other.id
 
     def dict(self):
+        uris = [{"uri": baseurl} for baseurl in self.baseurls]
         return {
             'type': 1,
             'id': self.id,
             'name': self.name,
             'login' : {
                 'username' : self.username, 
-                'password' : self.password
+                'password' : self.password,
+                'uris': uris
                 }
             }
+
+    def match_url(self, url):
+        return any([baseurl(url) == b for b in self.baseurls]) 
 
     def type_username(self, **kwargs):
         type_word(self.username, **kwargs)
