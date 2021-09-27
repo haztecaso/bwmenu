@@ -2,26 +2,23 @@ from subprocess import Popen, PIPE, STDOUT
 import re
 from typing import List
 
+from .utils import process_run
 from .bin import rofi
 from .item import Item
 
-def run(title:str, extra_options:List[str], stdin:str="") -> str:
-    process = Popen(
-            [rofi, "-dmenu", "-p", title] + extra_options,
-            stdout=PIPE, stdin=PIPE, stderr=STDOUT
-            )
-    stdout = process.communicate(input=bytes(stdin, "utf-8"))[0].strip()
-    return stdout.decode("utf-8")
+def run(title:str, extra_options:List[str], input:str="") -> str:
+    stdin = bytes(input, "utf-8")
+    stdout, _ = process_run([rofi, "-dmenu", "-p", title] + extra_options, input)
+    return stdout
+
 
 def error_message(message:str):
-    Popen(
-        [rofi, "-e", message + "!"],
-        stdout=PIPE, stdin=PIPE, stderr=STDOUT
-    ).communicate()
+    return process_run([rofi, "-e", message + "!"])
 
 
 def ask_password(title: str) -> str:
     return run(title, ["-password", "-lines", "0"])
+
 
 def select_item(items:List[Item]):
     id = run("Item", [],
