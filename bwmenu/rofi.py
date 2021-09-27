@@ -1,5 +1,3 @@
-from subprocess import Popen, PIPE, STDOUT
-import re
 from typing import List
 
 from .utils import process_run
@@ -7,7 +5,6 @@ from .bin import rofi
 from .item import Item
 
 def run(title:str, extra_options:List[str], input:str="") -> str:
-    stdin = bytes(input, "utf-8")
     stdout, _ = process_run([rofi, "-dmenu", "-p", title] + extra_options, input)
     return stdout
 
