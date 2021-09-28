@@ -24,6 +24,17 @@ class BitWarden():
         self.session_cache = Cache(SESSION_CACHE_FILE)
         self.list_cache = Cache(LIST_CACHE_FILE)
 
+    def clear_cache(self, **kwargs):
+        if kwargs.get("--clear-cache"):
+            self.list_cache.clear()
+            return True
+        elif kwargs.get("--clear-all-cache"):
+            self.session_cache.clear()
+            self.list_cache.clear()
+            return True
+        else:
+            return False
+
     @property
     def session_key(self):
         """
@@ -89,7 +100,7 @@ class BitWarden():
         from bitwarden-cli and then stored into self._item_list
         """
         if not self._item_list:
-            self.set_item_list_from_cache
+            self.set_item_list_from_cache()
         if not self._item_list:
             self.set_item_list_from_bw()
         return self._item_list
