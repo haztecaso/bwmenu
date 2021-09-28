@@ -76,13 +76,13 @@ class Item():
 
 def parse_item_list(raw_list_json:str) -> List[Item]:
     """Parse an item list encoded in json"""
-        return list(map(
-                lambda i: Item(i),
-                filter(
-                    lambda i: i['type'] == 1,
-                    json.loads(raw_list_json)
-                    )
-                ))
+    return list(map(
+            lambda i: Item(i),
+            filter(
+                lambda i: i['type'] == 1,
+                json.loads(raw_list_json)
+                )
+            ))
 
 def encode_item_list(items:List[Item]) -> str:
     """Encode an item list into json"""
