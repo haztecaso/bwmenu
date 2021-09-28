@@ -91,7 +91,7 @@ class BitWarden():
         if not self._item_list:
             self.set_item_list_from_cache
         if not self._item_list:
-            self._item_list = self.set_item_list_from_bw()
+            self.set_item_list_from_bw()
         return self._item_list
 
     def set_item_list_from_bw(self):
