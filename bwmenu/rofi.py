@@ -24,6 +24,7 @@ def ask_password(title: str) -> str:
 
 def select_item(items:List[Item]):
     """Select item from an item list"""
+    if len(items) == 1: return items[0]
     id = rofi("Item", [],
                 '\n'.join([str(item) for item in items])
             ).split("[id: ")[1][0:-1]
