@@ -67,5 +67,8 @@ class Cache():
 
     def clear(self):
         """Delete the cache file"""
-        os.remove(self.path)
+        try:
+            os.remove(self.path)
+        except FileNotFoundError:
+            pass
 
