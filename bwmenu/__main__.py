@@ -9,6 +9,10 @@ Options:
       Show version information and exit.
   --bw-match
       Use bitwarden-cli to match urls instead of custom implementation.
+  -c, --clear-cache
+      Clear cache files.
+  -C, --clear-items-cache
+      Only clear item list cache file.
 """
 
 from docopt import docopt
@@ -21,6 +25,11 @@ from .rofi import select_item, error_message
 def run():
     args = docopt(__doc__, version="bitwarden v0.1.1")
     bw = BitWarden()
+    if args.get("--clear-cache"):
+        bw.session_cache.clear()
+        bw.list_cache.clear()
+    elif args.get("--clear-items-cache"):
+        bw.list_cache.clear()
     qutebrowser = getenv("QUTE_MODE") == "command"
     if qutebrowser:
         items = bw.search_item_by_url(getenv("QUTE_URL"), args['--bw-match'])
