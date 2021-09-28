@@ -19,4 +19,6 @@ This are the script dependencies, if you want to install them by hand:
 - libnotify
 - rofi
 - xdotool
-- docopt python module
+- python modules:
+  - docopt
+  - tldextract

@@ -1,2 +1,3 @@
-- Document functions
 - Add interactive option to clear item list cache
+- Optimizations
+  - Search by url
