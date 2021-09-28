@@ -29,6 +29,7 @@ class ProcessError(Exception):
 
 
 def baseurl(url):
+    """Get the baseurl (domain+tld) of a url"""
     ext = tldextract.extract(url)
     return f"{ext.domain}.{ext.suffix}"
 

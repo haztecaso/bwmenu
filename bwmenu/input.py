@@ -4,14 +4,17 @@ from .bin import xdotool as xdotool_bin
 from .utils import process_run
 
 def qute_command(command):
+    """Launch a qutebrowser command"""
     with open(getenv('QUTE_FIFO'), 'w') as fifo:
         fifo.write(command + '\n')
         fifo.flush()
 
 def xdotool(*args:str, **kwargs:bool):
+    """xdotool wrapper"""
     process_run([xdotool_bin] + list(args))
 
 def type_word(word: str, **kwargs):
+    """type a word"""
     if kwargs.get("qute"):
         qute_command(f"insert-text {word}")
         pass
@@ -19,12 +22,14 @@ def type_word(word: str, **kwargs):
         xdotool("type", word, **kwargs)
 
 def type_tab(**kwargs):
+    """simulate pressing the tab key"""
     if kwargs.get("qute"):
         qute_command(f"fake-key <Tab>")
     else:
         xdotool("key", "Tab", **kwargs)
 
 def type_return(**kwargs):
+    """simulate pressing the return key"""
     if kwargs.get("qute"):
         qute_command(f"fake-key <Enter>")
     else:

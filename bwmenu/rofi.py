@@ -1,26 +1,30 @@
 from typing import List
 
 from .utils import process_run
-from .bin import rofi
+from .bin import rofi as rofi_bin
 from .item import Item
 
 
-def run(title:str, extra_options:List[str], stdin:str="") -> str:
-    cmd = [rofi, "-dmenu", "-p", title] + extra_options
+def rofi(title:str, extra_options:List[str], stdin:str="") -> str:
+    """rofi wrapper"""
+    cmd = [rofi_bin, "-dmenu", "-p", title] + extra_options
     stdout, _, _ = process_run(cmd, stdin)
     return stdout
 
 
 def error_message(message:str):
-    return process_run([rofi, "-e", message + "!"])
+    """display a message with rofi"""
+    return process_run([rofi_bin, "-e", message + "!"])
 
 
 def ask_password(title: str) -> str:
-    return run(title, ["-password", "-lines", "0"])
+    """prompt the user for a password"""
+    return rofi(title, ["-password", "-lines", "0"])
 
 
 def select_item(items:List[Item]):
-    id = run("Item", [],
+    """Select item from an item list"""
+    id = rofi("Item", [],
                 '\n'.join([str(item) for item in items])
             ).split("[id: ")[1][0:-1]
     for item in items:
