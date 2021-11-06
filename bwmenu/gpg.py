@@ -28,7 +28,7 @@ class DecryptionError(Exception):
 
 class Cache():
     """Custom class for encrypted caching"""
-    
+
     def __init__(self, path, data = None):
         self.path = path
         self.data = data

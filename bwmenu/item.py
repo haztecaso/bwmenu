@@ -38,7 +38,7 @@ class Item():
             'id': self.id,
             'name': self.name,
             'login' : {
-                'username' : self.username, 
+                'username' : self.username,
                 'password' : self.password,
                 'uris': uris
                 }
@@ -49,7 +49,7 @@ class Item():
         Return true if the baseurl of the given url matches any of the item
         baseurls
         """
-        return any([baseurl(url) == b for b in self.baseurls]) 
+        return any([baseurl(url) == b for b in self.baseurls])
 
     def type_username(self, **kwargs):
         """Type the username"""
