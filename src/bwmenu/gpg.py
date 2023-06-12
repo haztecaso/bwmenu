@@ -1,12 +1,11 @@
 import os
 
 from .utils import process_run, ProcessError
-from .bin import gpg
 
 
 def encrypt(path: str, data: str):
     """gpg wrapper for encrypting strings and saving them into files"""
-    cmd = [gpg, "-e", "--default-recipient-self", "--armor"]
+    cmd = ["gpg", "-e", "--default-recipient-self", "--armor"]
     stdout, _, _ = process_run(cmd, data)
     with open(path, "w") as f:
         f.write(stdout)
@@ -14,7 +13,7 @@ def encrypt(path: str, data: str):
 
 def decrypt(path: str) -> str:
     """gpg wrapper for decrypting files"""
-    cmd = [gpg, "-qd", "--default-recipient-self", path]
+    cmd = ["gpg", "-qd", "--default-recipient-self", path]
     stdout, stderr, error_code = process_run(cmd, ignore_error=True)
     if error_code != 0:
         raise DecryptionError(stderr)

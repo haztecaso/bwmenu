@@ -1,7 +1,6 @@
 from typing import List
 
 from .utils import process_run, ProcessError
-from .bin import bw
 from .rofi import ask_password
 from .item import Item, parse_item_list, encode_item_list
 from .gpg import Cache
@@ -56,7 +55,7 @@ class BitWarden():
         master_password = ask_password("Master Password")
         if len(master_password) > 0:
             try:
-                cmd = [bw, 'unlock', '--raw', master_password]
+                cmd = ["bw", 'unlock', '--raw', master_password]
                 self._session_key, _, _ = process_run(cmd)
             except ProcessError:
                 raise AuthError("Invalid master password")
@@ -78,7 +77,7 @@ class BitWarden():
         Runs a bitwarden-cli sub command with the --session parameter set to the
         self.session_key
         """
-        cmd = [bw] + subcmd + ["--session", self.session_key]
+        cmd = ["bw"] + subcmd + ["--session", self.session_key]
         stdout, _, _ = process_run(cmd)
         return stdout
 
@@ -90,7 +89,7 @@ class BitWarden():
         self._session_key = None
         self.session_cache.clear()
         self.list_cache.clear()
-        process_run([bw, "lock"])
+        process_run(["bw", "lock"])
 
     @property
     def item_list(self):

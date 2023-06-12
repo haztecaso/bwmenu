@@ -1,5 +1,0 @@
-bw = "bw"
-gpg = "gpg"
-notifySend = "notify-send"
-rofi = "rofi"
-xdotool = "xdotool"

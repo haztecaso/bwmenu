@@ -1,6 +1,5 @@
 from os import getenv
 
-from .bin import xdotool as xdotool_bin
 from .utils import process_run
 
 def qute_command(command):
@@ -9,9 +8,9 @@ def qute_command(command):
         fifo.write(command + '\n')
         fifo.flush()
 
-def xdotool(*args:str, **kwargs:bool):
+def xdotool(*args:str):
     """xdotool wrapper"""
-    process_run([xdotool_bin] + list(args))
+    process_run(["xdotool"] + list(args))
 
 def type_word(word: str, **kwargs):
     """type a word"""
