@@ -10,9 +10,13 @@ readme = "readme.md"
 python = "^3.10"
 tldextract = "^3.4.4"
 docopt = "^0.6.2"
+pydantic = "^1.10.9"
 
 [tool.poetry.scripts]
 bwmenu= 'bwmenu.__main__:main'
+
+[tool.poetry.group.dev.dependencies]
+black = "^23.3.0"
 
 [build-system]
 requires = ["poetry-core"]

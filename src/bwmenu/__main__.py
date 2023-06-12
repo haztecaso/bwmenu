@@ -18,36 +18,25 @@ Options:
 """
 
 from docopt import docopt
-from os import getenv
 
-from .utils import ProcessError
-from .bitwarden import BitWarden, AuthError
-from .rofi import select_item, error_message
+from .rofi import select_item
 
-
-def run(args, bw, qute, url):
-    if url:
-        items = bw.search_item_by_url(url, args['--bw-match'])
-    else:
-        items = bw.item_list
-    if len(items) == 0:
-        error_message("No items found")
-    else:
-        try: item = select_item(items)
-        except ProcessError: print("Item not selected...")
-        else: item.type_all(qute=qute)
+from .client import Client
 
 
 def main():
-    args = docopt(__doc__, version="bitwarden v0.1.1")
-    bw = BitWarden()
-    qute = getenv("QUTE_MODE") == "command"
-    url = getenv("QUTE_URL") if qute else args.get("--url")
-    if not bw.clear_cache(**args) or url:
-        try:
-            run(args, bw, qute, url)
-        except AuthError as e:
-            error_message(f'AuthError: {e.reason}')
+    args = docopt(__doc__, version="bwmenu v0.2.0")
+    cli = Client()
+    print(f"{cli.session.value = }")
+    if cli.session.value is None:
+        cli.unlock_interactive()
+    # baseurl = input("Url: ")
+    baseurl = "haztecaso.com"
+
+    item = select_item(cli.items_by_url(baseurl))
+    print(item.login.username, item.login.password)
+
+
 
 
 if __name__ == "__main__":
