@@ -9,15 +9,14 @@ Options:
       Show version information and exit.
   -u, --url URL
       Filter items that match this url basename.
-  --bw-match
-      Use bitwarden-cli to match urls instead of custom implementation.
-  -c, --clear-cache
-      Clear item list cache file.
-  -C, --clear-all-cache
-      Clear item list and session key cache files.
+  -c, --clear-session
+      Clear session cache.
 """
 
 from docopt import docopt
+from os import getenv
+
+from input import type_tab, type_word
 
 from .rofi import select_item
 
@@ -27,17 +26,24 @@ from .client import Client
 def main():
     args = docopt(__doc__, version="bwmenu v0.2.0")
     cli = Client()
-    print(f"{cli.session.value = }")
+    if args["--clear-session"]:
+        del cli.session.value
     if cli.session.value is None:
         cli.unlock_interactive()
-    # baseurl = input("Url: ")
-    baseurl = "haztecaso.com"
-
+    qute = getenv("QUTE_MODE") == "command"
+    if qute:
+        baseurl = getenv("QUTE_URL")
+        assert baseurl is not None
+    else:
+        baseurl = args["--url"]
+        baseurl = "" if baseurl is None else baseurl
     item = select_item(cli.items_by_url(baseurl))
-    print(item.login.username, item.login.password)
-
-
-
+    if item.login.username is not None:
+        type_word(item.login.username, qute)
+    if item.login.username is not None and item.login.password is not None:
+        type_tab(qute)
+    if item.login.password is not None:
+        type_word(item.login.password, qute)
 
 if __name__ == "__main__":
     main()
