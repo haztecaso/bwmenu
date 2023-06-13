@@ -16,7 +16,7 @@ Options:
 from docopt import docopt
 from os import getenv
 
-from input import type_tab, type_word
+from .input import type_tab, type_word
 
 from .rofi import select_item
 
