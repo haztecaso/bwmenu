@@ -1,6 +1,6 @@
-# bitwarden-rofi (bwmenu)
+# bwmenu
 
-bitwarden-cli rofi wrapper written in python and with qutebrowser userscripts support.
+bitwarden rofi wrapper written in python and with qutebrowser userscripts support.
 
 ## Installing
 
