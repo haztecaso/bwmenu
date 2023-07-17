@@ -11,6 +11,8 @@ Options:
       Filter items that match this url basename.
   -c, --clear-session
       Clear session cache.
+  -p, --password-only
+      Fill only password.
 """
 
 from docopt import docopt
@@ -38,10 +40,11 @@ def main():
         baseurl = args["--url"]
         baseurl = "" if baseurl is None else baseurl
     item = select_item(cli.items_by_url(baseurl))
-    if item.login.username is not None:
-        type_word(item.login.username, qute)
-    if item.login.username is not None and item.login.password is not None:
-        type_tab(qute)
+    if not args["--password-only"]:
+        if item.login.username is not None:
+            type_word(item.login.username, qute)
+        if item.login.username is not None and item.login.password is not None:
+            type_tab(qute)
     if item.login.password is not None:
         type_word(item.login.password, qute)
 
