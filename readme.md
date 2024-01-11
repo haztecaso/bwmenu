@@ -1,3 +1,4 @@
+nolehagascaso
 # bwmenu
 
 bitwarden rofi wrapper written in python and with qutebrowser userscripts support.
